@@ -13,6 +13,7 @@ find ssh -name '*.pub' -a \! -name '@*' -type f -print0 \
 
 ALL_SHA1="$(
   find ssh/ -name '*.pub' -a \! -name '@*' -exec cat '{}' + \
+  | sort \
   | git hash-object -t blob -w --stdin --no-filters
 )"
 
