@@ -26,14 +26,18 @@ jobs:
     # Auto-merge only when:
     #  - validation passed and the PR touches nothing but ssh/*.pub files
     #  - the PR branch lives in this repo (fork PRs get a read-only token)
-    #  - the author is an owner/member/collaborator of the repo
+    #  - the author is an owner/member/collaborator of the repo, or the
+    #    Sepia onboarding GitHub App (apps report author_association NONE)
     needs: validate
     if: >-
       needs.validate.outputs.eligible == 'true' &&
       github.event.pull_request.draft == false &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'),
-               github.event.pull_request.author_association)
+      (
+        github.event.pull_request.user.login == 'sepia-lab-onboarding-app[bot]' ||
+        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'),
+                 github.event.pull_request.author_association)
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: write
