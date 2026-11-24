@@ -8,6 +8,9 @@ used for accessing the Sepia lab.
 SSH keys are stored as ``ssh/USER.pub``. A group called ``@all`` is
 automatically provided, that contains keys for all the known users.
 
+A file whose keys were revoked holds only a ``# revoked`` comment. Its
+owner gets access back by adding a new public key to that file.
+
 Pull requests are validated by CI (``.github/workflows/pr-validate.yml``) and
 merged only after a review from ``@ceph/sepia-admin``; nothing merges
 automatically.

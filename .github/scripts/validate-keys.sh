@@ -74,6 +74,11 @@ validate_file() {
   done < "$f"
 
   if [ "$keys" -eq 0 ]; then
+    # A revoked file holds only a "# revoked" comment until its owner adds a key.
+    if grep -q '^# revoked' "$f"; then
+      echo "$f: OK revoked, no keys"
+      return 0
+    fi
     echo "::error file=$f::$f contains no SSH public keys"
     return 1
   fi
